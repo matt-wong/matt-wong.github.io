@@ -565,8 +565,20 @@
 .project-hero__wide img {
   display: block;
   width: 100%;
-  aspect-ratio: 2166 / 1558;
-  object-fit: cover;
+  height: auto;
+}
+
+/* Project pages: a plain photo in the hero slot instead of a phone frame */
+.project-photo {
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 24px 50px -20px rgba(60, 20, 10, 0.55);
+}
+
+.project-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 .platform-badge {
@@ -602,7 +614,8 @@
   }
 
   .project-hero .phone-frame,
-  .project-hero .phone-tilt {
+  .project-hero .phone-tilt,
+  .project-hero .project-photo {
     width: 100%;
     max-width: 13rem;
     margin: 0 auto;
