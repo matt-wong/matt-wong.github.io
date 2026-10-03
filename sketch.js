@@ -11,15 +11,10 @@ let colorPalettes = [
 let currentPaletteIndex = -1;
 let noiseTexture;
 let floorBlocks = [];
-let model3D;
-let ghosts = [];
 let housePlantModel;
 let plants = [];
 let buildingModels = [];
 let buildings = [];
-
-const GHOST_COUNT = 3;
-const GHOST_MODEL_PATH = 'assets/Elf-Ghost-P.stl';
 
 const PLANT_COUNT = 6;
 const PLANT_MODEL_PATH = 'assets/eb_house_plant_01.obj';
@@ -39,6 +34,9 @@ const SHAPE_PROBABILITIES = {
 };
 
 let isRegenerating = false;
+// The first draw() uploads every model to the GPU, so the overlay stays up
+// until a frame has actually rendered.
+let hideLoadingAfterDraw = false;
 
 function setCanvasLoading(isLoading) {
     const overlay = document.getElementById('canvas-loading');
@@ -88,7 +86,6 @@ function prepareObjModel(model) {
 }
 
 function preload() {
-    model3D = loadModel(GHOST_MODEL_PATH, true);
     housePlantModel = loadModel(PLANT_MODEL_PATH, true);
     buildingModels = BUILDING_MODEL_PATHS.map((path) => loadModel(path, true));
 }
@@ -100,9 +97,6 @@ function setup() {
     // Create a p5.Camera object.
     cam = createCamera();
     loadTextures();
-    if (model3D && typeof model3D.computeNormals === 'function') {
-        model3D.computeNormals();
-    }
     prepareObjModel(housePlantModel);
     for (const buildingModel of buildingModels) {
         prepareObjModel(buildingModel);
@@ -165,34 +159,13 @@ async function regenScene(showOverlay = false) {
     try {
         await generateTowers();
         await generateFloor();
-        generateGhosts();
         generatePlants();
         generateBuildings();
     } finally {
         if (showOverlay) {
-            setCanvasLoading(false);
+            hideLoadingAfterDraw = true;
         }
         isRegenerating = false;
-    }
-}
-
-function generateGhosts() {
-    ghosts = [];
-    if (!model3D) {
-        return;
-    }
-
-    for (let i = 0; i < GHOST_COUNT; i++) {
-        ghosts.push({
-            x: random(-220, 220),
-            y: random(-120, -40),
-            z: random(-220, 220),
-            scale: random(0.35, 0.75),
-            rotationX: random(-PI / 6, PI / 6),
-            rotationY: random(0, TWO_PI),
-            rotationZ: random(-PI / 6, PI / 6),
-            color: pickPaletteColor(),
-        });
     }
 }
 
@@ -354,26 +327,11 @@ function draw() {
     }
 
     drawBuildings();
-    drawGhosts();
     drawPlants();
-}
 
-function drawGhosts() {
-    if (!model3D || ghosts.length === 0) {
-        return;
-    }
-
-    for (const ghost of ghosts) {
-        push();
-        translate(ghost.x, ghost.y, ghost.z);
-        rotateX(ghost.rotationX);
-        rotateY(ghost.rotationY);
-        rotateZ(ghost.rotationZ);
-        scale(ghost.scale);
-        noStroke();
-        emissiveMaterial(ghost.color);
-        model(model3D);
-        pop();
+    if (hideLoadingAfterDraw) {
+        hideLoadingAfterDraw = false;
+        setCanvasLoading(false);
     }
 }
 
