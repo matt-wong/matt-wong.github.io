@@ -582,6 +582,15 @@
   height: auto;
 }
 
+/* Weekly Quota: phone on the right */
+.project-hero--flip {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 15rem);
+}
+
+.project-hero--flip > .phone-frame {
+  order: 2;
+}
+
 .platform-badge {
   display: inline-flex;
   align-items: center;
@@ -609,9 +618,32 @@
   color: #212529;
 }
 
+.platform-badge--flutter {
+  background: rgba(2, 86, 155, 0.12);
+  color: #02569b;
+}
+
+.platform-badge--flutter .brand-icon {
+  color: #027dfd;
+}
+
+.platform-badge--ios {
+  background: rgba(33, 37, 41, 0.1);
+  color: #212529;
+}
+
+.platform-badge--ios .brand-icon {
+  color: #212529;
+}
+
 @media (max-width: 720px) {
-  .project-hero {
+  .project-hero,
+  .project-hero--flip {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .project-hero--flip > .phone-frame {
+    order: 0;
   }
 
   .project-hero .phone-frame,
