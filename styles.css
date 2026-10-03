@@ -69,30 +69,30 @@
 
 :root {
   --nav-tab-color-1: #264653;
-  --nav-tab-color-2: #2a9d8f;
-  --nav-tab-color-3: #dba417;
-  --nav-tab-color-4: #f4a261;
-  --nav-tab-color-5: #e76f51;
+  --nav-tab-color-2: #f4a261;
+  --nav-tab-color-3: #e76f51;
+  --nav-tab-color-4: #dba417;
+  --nav-tab-color-5: #2a9d8f;
 }
 
 .site-header .nav-pills .nav-item:nth-child(1) .nav-link {
-  --nav-tab-color: #264653;
+  --nav-tab-color: var(--nav-tab-color-1);
 }
 
 .site-header .nav-pills .nav-item:nth-child(2) .nav-link {
-  --nav-tab-color: #2a9d8f;
+  --nav-tab-color: var(--nav-tab-color-2);
 }
 
 .site-header .nav-pills .nav-item:nth-child(3) .nav-link {
-  --nav-tab-color: #dba417;
+  --nav-tab-color: var(--nav-tab-color-3);
 }
 
 .site-header .nav-pills .nav-item:nth-child(4) .nav-link {
-  --nav-tab-color: #f4a261;
+  --nav-tab-color: var(--nav-tab-color-4);
 }
 
 .site-header .nav-pills .nav-item:nth-child(5) .nav-link {
-  --nav-tab-color: #e76f51;
+  --nav-tab-color: var(--nav-tab-color-5);
 }
 
 .site-header .nav-pills .nav-link {
@@ -306,6 +306,29 @@
   margin-bottom: 3rem;
 }
 
+/* Copy beside the canvas on wide screens, stacked above it otherwise */
+.art-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 17rem) minmax(0, 1fr);
+  gap: 2rem;
+  align-items: center;
+}
+
+.art-layout .canvas-wrapper {
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+@media (max-width: 992px) {
+  .art-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .art-copy {
+    max-width: 40rem;
+  }
+}
+
 .art-page-section .canvas-host {
   display: flex;
   justify-content: center;
@@ -383,6 +406,79 @@
   40% {
     opacity: 1;
   }
+}
+
+/* Generative art page: "?" button over the canvas that opens the controls legend */
+.canvas-legend {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 11;
+  line-height: normal;
+}
+
+.canvas-legend__toggle {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+.canvas-legend__toggle::-webkit-details-marker {
+  display: none;
+}
+
+.canvas-legend[open] .canvas-legend__toggle {
+  background: var(--bs-emphasis-color);
+  color: #fff;
+}
+
+.canvas-legend__panel {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  width: max-content;
+  max-width: min(16rem, 80vw);
+  padding: 0.85rem 1rem;
+  border-radius: 0.6rem;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4);
+  font-size: 0.875rem;
+}
+
+.canvas-legend__title {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.canvas-legend__list {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.4rem 0.9rem;
+  margin: 0;
+}
+
+.canvas-legend__list dt {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.canvas-legend__list dd {
+  margin: 0;
+  color: var(--bs-secondary-color);
+}
+
+.canvas-legend__list kbd {
+  padding: 0.1rem 0.4rem;
+  font-size: 0.8rem;
 }
 
 .brand-icon {
@@ -567,6 +663,20 @@
   display: block;
   width: 100%;
   height: auto;
+}
+
+/* Two linked photos side by side under the hero copy */
+.project-hero__pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  align-items: start;
+  max-width: 22rem;
+  margin-top: 0.5rem;
+}
+
+.project-hero__pair .project-hero__wide {
+  margin-top: 0;
 }
 
 /* Project pages: a plain photo in the hero slot instead of a phone frame */
