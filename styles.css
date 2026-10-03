@@ -648,3 +648,20 @@
 .nav-bars__bar {
   flex: 0 0 20%;
 }
+
+@media (max-width: 1199.98px) {
+  .site-header .nav-pills .nav-link {
+    padding-inline: 0.7rem;
+  }
+}
+
+/* Logo in the header: the same colour bars, masked to the logo's outline */
+.site-logo {
+  position: relative;
+  flex: 0 0 auto;
+  width: 1.75rem;
+  height: 2.05rem;
+  overflow: hidden;
+  -webkit-mask: url("assets/logo.svg") center / contain no-repeat;
+  mask: url("assets/logo.svg") center / contain no-repeat;
+}

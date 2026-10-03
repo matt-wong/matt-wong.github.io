@@ -1,15 +1,18 @@
-// Colour bars in the header: cycle the stack so the current page's colour
-// sits at the bottom, animating from wherever the previous page left it.
+// Colour bars in the header (the strip and the logo): cycle the stack so the
+// current page's colour sits at the bottom, animating from wherever the
+// previous page left it.
 (function () {
-  var track = document.querySelector('.nav-bars__track');
-  if (!track) return;
+  var tracks = Array.prototype.slice.call(document.querySelectorAll('.nav-bars__track'));
+  if (!tracks.length) return;
 
-  var bars = Array.prototype.slice.call(track.children);
-  var count = bars.length;
+  var count = tracks[0].children.length;
 
   // Three copies of the bars so any rotation is a plain vertical translate.
-  [0, 1].forEach(function () {
-    bars.forEach(function (bar) { track.appendChild(bar.cloneNode(true)); });
+  tracks.forEach(function (track) {
+    var bars = Array.prototype.slice.call(track.children);
+    [0, 1].forEach(function () {
+      bars.forEach(function (bar) { track.appendChild(bar.cloneNode(true)); });
+    });
   });
 
   var page = location.pathname.split('/').pop() || 'index.html';
@@ -23,7 +26,9 @@
   var offset = selected < 0 ? count : count + (selected + 1) % count;
 
   function place(index) {
-    track.style.transform = 'translateY(' + (-index * 100 / count) + '%)';
+    tracks.forEach(function (track) {
+      track.style.transform = 'translateY(' + (-index * 100 / count) + '%)';
+    });
   }
 
   var previous = null;
@@ -37,7 +42,7 @@
   }
 
   place(Number(previous));
-  track.getBoundingClientRect(); // commit the starting position before animating
-  track.classList.add('is-animating');
+  tracks[0].getBoundingClientRect(); // commit the starting position before animating
+  tracks.forEach(function (track) { track.classList.add('is-animating'); });
   place(offset);
 })();
