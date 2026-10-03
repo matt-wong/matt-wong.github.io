@@ -547,26 +547,41 @@
   }
 }
 
-/* Project pages: one wide screenshot in place of the thumbnail pair */
+/* Project pages: one wide screenshot spanning the row under the hero */
+.project-hero--wide {
+  max-width: 60rem;
+  row-gap: clamp(2rem, 5vw, 3rem);
+}
+
 .project-hero__wide {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.project-hero__wide a {
   display: block;
-  max-width: 24rem;
-  margin-top: 0.5rem;
   border-radius: 0.75rem;
   overflow: hidden;
-  box-shadow: 0 10px 24px -14px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.55);
   transition: transform 0.25s ease;
 }
 
-.project-hero__wide:hover {
+.project-hero__wide a:hover {
   transform: translateY(-2px);
 }
 
 .project-hero__wide img {
   display: block;
   width: 100%;
+  height: auto;
   aspect-ratio: 2166 / 1558;
-  object-fit: cover;
+}
+
+.project-hero__wide figcaption {
+  margin-top: 0.6rem;
+  font-size: 0.875rem;
+  color: var(--bs-secondary-color);
+  text-align: center;
 }
 
 .platform-badge {
